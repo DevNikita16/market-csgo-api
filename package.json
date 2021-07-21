@@ -1,10 +1,10 @@
 {
-  "name": "market-csgo-api",
+  "name": "@dev.nikita16/market-csgo-api",
   "version": "0.4.12",
   "description": "A module for interacting with the market.csgo.com API",
   "repository": {
     "type": "git",
-    "url": "https://github.com/malsatin/market-csgo-api.git"
+    "url": "git+https://github.com/DevNikita16/market-csgo-api.git"
   },
   "keywords": [
     "node",
@@ -23,16 +23,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "bugs": {
-    "url": "https://github.com/malsatin/market-csgo-api/issues"
-  },
-  "homepage": "https://github.com/malsatin/market-csgo-api#readme",
-  "author": "Malsa",
-  "license": "GNU GPLv3",
+  "author": "DevNikita16",
+  "license": "UNLICENSED",
   "dependencies": {
     "bottleneck": "^2.19.5",
     "got": "^11.8.2",
     "merge": "^2.1.1",
     "papaparse": "^5.3.0"
-  }
+  },
+  "main": "index.js"
 }
