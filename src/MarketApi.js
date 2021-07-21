@@ -1515,6 +1515,8 @@ class MarketApi {
      * @return {Promise}
      */
     buyV2Create(item, price, customId = null, gotOptions = null) {
+        let self = this.constructor;
+
         let params = {
             price: price
         };
