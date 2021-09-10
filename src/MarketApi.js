@@ -140,14 +140,14 @@ class MarketApi {
      * @throws {MarketApiError}
      */
     constructor(options = {}) {
-        if(!options.apiKey) {
+        if (!options.apiKey) {
             throw new MarketApiError('API key required');
         }
         let self = this.constructor;
 
         // Adds trailing slash
-        if(options.baseUrl) {
-            if(!options.baseUrl.endsWith('/')) {
+        if (options.baseUrl) {
+            if (!options.baseUrl.endsWith('/')) {
                 options.baseUrl += '/';
             }
         }
@@ -172,7 +172,7 @@ class MarketApi {
          *  CSGO.TM API has a limit of 5 requests per second.
          *  If you violate this restriction, your API key will become invalid
          */
-        if(this.options.useLimiter) {
+        if (this.options.useLimiter) {
             this.limiter = new Bottleneck(this.options.limiterOptions);
         }
     }
@@ -201,9 +201,9 @@ class MarketApi {
         return got(url, gotOptions).then(response => {
             let body = response.body;
 
-            if(body.error) {
+            if (body.error) {
                 let errorMessage = String(body.error);
-                if(body.result) {
+                if (body.result) {
                     errorMessage += `. ${body.result}`;
                 }
 
@@ -226,14 +226,14 @@ class MarketApi {
      * @return {String}
      */
     static formatApiCall(params, disableProcessing = false) {
-        if(!Array.isArray(params)) {
+        if (!Array.isArray(params)) {
             params = [params];
         }
 
-        if(!disableProcessing) {
+        if (!disableProcessing) {
             params = params.filter((p) => !!p).map((p) => String(p));
 
-            if(params.length === 0) {
+            if (params.length === 0) {
                 throw new MarketApiError('Api call params should contain at least 1 param');
             }
         }
@@ -264,11 +264,11 @@ class MarketApi {
             classId: String(item.i_classid || item.classid || item.classId || item.class),
             instanceId: String(item.i_instanceid || item.instanceid || item.instanceId || item.instance || 0),
         };
-        if(ids.instanceId === '0' && item.ui_real_instance) {
+        if (ids.instanceId === '0' && item.ui_real_instance) {
             ids.instanceId = String(item.ui_real_instance);
         }
 
-        if(!asNumbers) {
+        if (!asNumbers) {
             return ids;
         } else {
             return {
@@ -286,7 +286,7 @@ class MarketApi {
      * @returns {String}
      */
     static getItemHash(item) {
-        if(typeof item === 'string') {
+        if (typeof item === 'string') {
             return item;
         }
 
@@ -315,7 +315,7 @@ class MarketApi {
      * @returns {Promise}
      */
     limitRequest(callback) {
-        if(this.options.useLimiter) {
+        if (this.options.useLimiter) {
             return this.limiter.schedule(callback);
         } else {
             return callback();
@@ -369,7 +369,7 @@ class MarketApi {
         let methodPath = encodeURI(self.formatApiCall(method));
         let queryParams = queryStringify(completeOptions);
 
-        if(version === MarketApi.VERSIONS.V2) {
+        if (version === MarketApi.VERSIONS.V2) {
             return `${this.apiUrl}/${MarketApi.VERSIONS.V2}/${methodPath}/?${queryParams}`;
         }
 
@@ -409,7 +409,7 @@ class MarketApi {
 
         return this.limitRequest(() => {
             return this.requestJsonHook(url, optionsClone).catch((error) => {
-                if(!this.options.extendedError) {
+                if (!this.options.extendedError) {
                     delete (error.response, error.gotOptions);
                 }
 
@@ -446,7 +446,7 @@ class MarketApi {
      * @return {Object}
      */
     makeGotOptions(opts) {
-        if(!opts) {
+        if (!opts) {
             opts = this.options.defaultGotOptions;
         }
 
@@ -511,7 +511,7 @@ class MarketApi {
                 skipEmptyLines: true,
             });
 
-            if(parsed.errors.length) {
+            if (parsed.errors.length) {
                 throw parsed.errors;
             }
 
@@ -866,7 +866,7 @@ class MarketApi {
         // [SELL], [BUY], [HISTORY], [INFO]
         let url = 'MassInfo/%s/%s/%s/%s';
 
-        if(!Array.isArray(items)) {
+        if (!Array.isArray(items)) {
             items = [items];
         }
 
@@ -967,7 +967,7 @@ class MarketApi {
 
         let types = self.CREATE_TRADE_REQUEST_TYPE;
         let typeUpper = type.toUpperCase();
-        if(!types.hasOwnProperty(typeUpper)) {
+        if (!types.hasOwnProperty(typeUpper)) {
             type = types.OUT;
         } else {
             type = types[typeUpper];
@@ -1003,7 +1003,7 @@ class MarketApi {
         let name;
         try {
             name = self.formatItem(item);
-        } catch(e) {
+        } catch (e) {
             name = self.getItemHash(item);
         }
 
@@ -1023,7 +1023,7 @@ class MarketApi {
      */
     sellMassUpdatePriceById(prices, gotOptions = null) {
         let list = {};
-        for(let ui_id in prices) {
+        for (let ui_id in prices) {
             list[Number(ui_id)] = Number(prices[ui_id]);
         }
 
@@ -1053,7 +1053,7 @@ class MarketApi {
         let method = ['Buy', self.formatItem(item), self.formatPrice(price), item.hash];
 
         let _partnerData = null;
-        if(tradeData && tradeData.partnerId && tradeData.tradeToken) {
+        if (tradeData && tradeData.partnerId && tradeData.tradeToken) {
             _partnerData = {
                 partner: tradeData.partnerId,
                 token: tradeData.tradeToken,
@@ -1081,7 +1081,7 @@ class MarketApi {
         let url = ['GetOrders'];
 
         page = parseInt(page);
-        if(!isNaN(page) && page > 0) {
+        if (!isNaN(page) && page > 0) {
             url.push(page);
         }
 
@@ -1218,7 +1218,7 @@ class MarketApi {
      */
     searchItemsByName(items, gotOptions = null) {
         let self = this.constructor;
-        if(!Array.isArray(items)) {
+        if (!Array.isArray(items)) {
             items = [items];
         }
 
@@ -1436,7 +1436,7 @@ class MarketApi {
      */
     accountV2GetHistory(from, to = null, gotOptions = null) {
         let params;
-        if(to) {
+        if (to) {
             let fromUnixtime = Math.floor(from.getTime() / 1000);
             let toUnixtime = Math.floor(to.getTime() / 1000);
 
@@ -1459,7 +1459,7 @@ class MarketApi {
      */
     accountV2GetTrades(extended = null, gotOptions = null) {
         let params;
-        if(extended) {
+        if (extended) {
             params = {extended: 1};
         }
 
@@ -1521,13 +1521,13 @@ class MarketApi {
             price: price
         };
 
-        if(typeof item === 'object') {
+        if (typeof item === 'object') {
             params.id = self.formatItem(item);
         } else {
             params.market_hash_name = item;
         }
 
-        if(customId) {
+        if (customId) {
             params.custom_id = customId;
         }
 
@@ -1551,20 +1551,21 @@ class MarketApi {
             price: price
         };
 
-        if(typeof item === 'object') {
+        if (typeof item === 'object') {
             params.id = self.formatItem(item);
         } else {
-            params.market_hash_name = item;
+            params.hash_name = item;
         }
 
-        if(tradeData && tradeData.partnerId && tradeData.tradeToken) {
+        if (tradeData && tradeData.partnerId && tradeData.tradeToken) {
             params = {
+                ...params,
                 partner: tradeData.partnerId,
                 token: tradeData.tradeToken,
             };
         }
 
-        if(customId) {
+        if (customId) {
             params.custom_id = customId;
         }
 
@@ -1666,7 +1667,7 @@ class MarketApi {
      */
     tradeV2Take(botId = null, gotOptions = null) {
         let params = {};
-        if(botId) {
+        if (botId) {
             params = {bot: botId};
         }
 
