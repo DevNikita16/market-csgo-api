@@ -1593,7 +1593,7 @@ class MarketApi {
      * @return {Promise}
      */
     buyV2InfoAll(customIds, gotOptions = null) {
-        let params = {custom_id: customIds};
+        let params = {'custom_id[]': customIds};
 
         return this.callV2MethodWithKey('get-list-buy-info-by-custom-id', gotOptions, params);
     }
